@@ -1,4 +1,5 @@
 import sys
+import random
 from PIL import Image
 from module.AudioAnalyzer import *
 from configparser import ConfigParser
@@ -40,6 +41,12 @@ screen_h = int(infoObject.current_h)
 screen = pygame.display.set_mode([screen_w, screen_h])
 t = pygame.time.get_ticks()
 getTicksLastFrame = t
+
+cover_l = 200
+cover = pygame.image.load(albumcover)
+cover = pygame.transform.smoothscale(cover, [cover_l, cover_l])
+cover_pos = cover.get_rect()
+cover_pos = cover_pos.move((screen_w - cover_pos.width) / 2, (screen_h - cover_pos.height) / 2)
 
 # Set up parameters
 timeCount = 0
@@ -104,12 +111,23 @@ for group in freq_groups:
 angle_dt = 360 / length
 ang = 0
 
+w = cover_l * 4 / length
+steps = [[w, 0] for i in range(length // 4 + 1)]
+steps.extend([[0, w] for i in range(length // 4 + 1)])
+steps.extend([[-w, 0] for i in range(length // 4 + 1)])
+steps.extend([[0, -w] for i in range (length // 4 + 1)])
+x, y = (screen_w - cover_pos.width) / 2, (screen_h - cover_pos.height) / 2
+steps[0][0] += x
+steps[0][1] += y
+for i in range(1, len(steps)):
+    steps[i][0] += steps[i - 1][0]
+    steps[i][1] += steps[i - 1][1]
+# random.shuffle(steps)
+
 for g in tmp_bars:
     gr = []
     for c in g:
-        gr.append(RotatedAverageAudioBar(circleX + radius * math.cos(math.radians(ang - 90)),
-                                          circleY + radius * math.sin(math.radians(ang - 90)),
-                                          c, (255, 0, 255), angle = ang, width = 8, max_height = 400))
+        gr.append(RotatedAverageAudioBar(0, 0, c, (0, 0, 0), angle = ang, width = 8, max_height = 400))
         ang += angle_dt
     bars.append(gr)
 
@@ -160,7 +178,7 @@ while running:
         bass_trigger_started = 0
         polygon_bass_color = None
         radius_vel = (min_radius - radius) / 0.15
-        polygon_color_vel = [(polygon_default_color[x] - poly_color[x])/0.15 for x in range(len(poly_color))]
+        polygon_color_vel = [(polygon_default_color[x] - poly_color[x]) / 0.15 for x in range(len(poly_color))]
 
     else:
         bass_trigger_started = 0
@@ -177,21 +195,19 @@ while running:
         value = polygon_color_vel[x] * deltaTime + poly_color[x]
         poly_color[x] = value
 
+
+    i = 0
     for b1 in bars:
         for b in b1:
-            b.x, b.y = circleX + radius * math.cos(math.radians(b.angle - 90)), circleY + radius * math.sin(math.radians(b.angle - 90))
+            b.x, b.y = steps[i]
+            i += 1
             b.update_rect()
             poly.append(b.rect.points[3])
             poly.append(b.rect.points[2])
 
     pygame.draw.polygon(screen, poly_color, poly)
-    # pygame.draw.circle(screen, circle_color, (circleX, circleY), int(radius))
-
-    cover = pygame.image.load(albumcover)
-    cover = pygame.transform.smoothscale(cover, [200, 200])
-    cover_pos = cover.get_rect()
-    cover_pos = cover_pos.move((screen_w - cover_pos.width) / 2, (screen_h - cover_pos.height) / 2)
     screen.blit(cover, cover_pos)
+    # pygame.draw.circle(screen, circle_color, (circleX, circleY), int(radius))
 
     pygame.display.flip()
 
