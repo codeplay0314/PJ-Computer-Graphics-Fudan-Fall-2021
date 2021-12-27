@@ -42,9 +42,9 @@ GitHub项目地址: https://github.com/codeplay0314/PJ-Computer-Graphics-Fudan-F
  ```
 
  ### 运行效果
-<img src="data/pics/1-1.jpg" width = "300" alt="result2" align=center />  
+<img src="data/1-1.jpg" width = "400" alt="result2" align=center />  
 
- 视频见 `data/videos/1.mp4`
+ 视频见 `data/1-2.mp4`
 
  ## 2 Realistic Rendering
 
@@ -58,6 +58,15 @@ GitHub项目地址: https://github.com/codeplay0314/PJ-Computer-Graphics-Fudan-F
  ```
 
  ### 运行效果
-<img src="data/pics/2-1.jpg" width = "300" alt="result2" align=center />
+<img src="data/2-1.jpg" width = "400" alt="result2" align=center />
   
-## 
+## 3 Flash Animation
+通过 Adobe Animation 制作了一个3个关键帧、帧率为24fps的复旦logo展开gif
+
+### 项目文件
+`3-Flash-Animation/fudan.fla`
+
+### 运行效果
+见 `data/3-1.gif`  
+
+<img src="data/3-1.gif" width = "400" alt="result3" align=center />
