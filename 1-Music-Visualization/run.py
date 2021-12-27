@@ -75,12 +75,11 @@ radius = min_radius
 radius_vel = 0
 
 
-bass = {"start": 50, "stop": 100, "count": 12}
-heavy_area = {"start": 120, "stop": 250, "count": 40}
-low_mids = {"start": 251, "stop": 2000, "count": 50}
-high_mids = {"start": 2001, "stop": 6000, "count": 20}
+bass = {"start": 30, "stop": 150, "count": 12}
+heavy_area = {"start": 150, "stop": 500, "count": 40}
+low_mids = {"start": 500, "stop": 5000, "count": 50}
 
-freq_groups = [bass, heavy_area, low_mids, high_mids]
+freq_groups = [bass, heavy_area, low_mids]
 
 bars = []
 tmp_bars = []
